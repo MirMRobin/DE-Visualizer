@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Differential Evolution method descriptions and research figure methods.">
+<title>Methods · Differential Evolution Visualizer</title>
+<style>
+:root{--ink:#172d39;--muted:#536970;--paper:#f3f5f3;--line:#d5dfdb;--teal:#16766d;--gold:#bd9252;--serif:"Times New Roman",Georgia,serif;--sans:Arial,Helvetica,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--serif)}header,main,footer{max-width:1100px;margin:auto;padding:0 28px}header{display:flex;justify-content:space-between;align-items:center;padding-top:23px;padding-bottom:17px;border-bottom:1px solid var(--line);font:13px var(--sans)}header a{color:var(--teal);text-decoration:none;border:1px solid var(--line);padding:8px 12px;background:#fff}main{padding-top:38px;padding-bottom:60px}h1{font-size:clamp(38px,6vw,60px);line-height:1.05;font-weight:normal;margin:0 0 12px;max-width:760px}h2{font-size:27px;font-weight:normal;margin:35px 0 8px}p{max-width:78ch;color:#40565f}li{margin:5px 0;max-width:78ch}.lead{font-size:20px;max-width:72ch;color:#40565f}.callout{border:1px solid var(--line);background:#fff;padding:15px 18px;margin:20px 0}.callout strong{color:var(--teal)}table{width:100%;border-collapse:collapse;background:#fff;font:14px/1.5 var(--sans)}th,td{padding:10px 12px;text-align:left;vertical-align:top;border:1px solid var(--line)}th{background:#eaf2ef;color:#304c50}code{font:13px Consolas,monospace;background:#eaf0ed;padding:2px 4px}a{color:var(--teal)}footer{padding-top:16px;padding-bottom:25px;border-top:1px solid var(--line);font:12px var(--sans);color:var(--muted)}:focus-visible{outline:3px solid var(--gold);outline-offset:2px}@media(max-width:650px){header,main,footer{padding-left:16px;padding-right:16px}table{font-size:12px}th,td{padding:7px}}
+</style>
+</head>
+<body>
+<header><strong>Differential Evolution Visualizer</strong><nav><a href="index.html?tab=lab">Open Evolution Lab</a></nav></header>
+<main>
+<h1>Algorithm and figure methods</h1>
+<p class="lead">The Evolution lab implements browser teaching profiles that expose the main mechanism of each selected Differential Evolution method. The Data Studio builds descriptive research figures from imported files.</p>
+<div class="callout"><strong>Reproduction boundary.</strong> These compact browser profiles are not certified reference implementations or exact competition configurations. Population sizes and evaluation budgets are user configurable, several adaptation schedules are simplified, and no CEC benchmark suite is run. Use the original papers and validated reference code for formal experiments.</div>
+<h2>Differential Evolution profiles</h2>
+<table><thead><tr><th>Method</th><th>Mechanism shown in this application</th><th>Implementation note</th></tr></thead><tbody>
+<tr><td>Configurable DE</td><td>User-selectable mutation, crossover, F, and CR.</td><td>rand/1, best/1, current-to-best/1; binomial, exponential, blend, and contiguous segment crossover. Independent jitter is an experimental, unnamed variation.</td></tr>
+<tr><td>DE/rand/1/bin</td><td>Random base plus one scaled difference; binomial crossover.</td><td>Fixed user-selected F.</td></tr>
+<tr><td>DE/best/1/bin</td><td>Current best base plus one scaled difference; binomial crossover.</td><td>Fixed user-selected F.</td></tr>
+<tr><td>DE/current-to-best/1/bin</td><td>Target movement toward the current best plus a scaled difference.</td><td>Fixed user-selected F.</td></tr>
+<tr><td>DE/rand/2/bin</td><td>Random base plus two scaled differences.</td><td>Fixed F; at least six population members are required.</td></tr>
+<tr><td>DE/current-to-rand/1</td><td>Randomized movement toward a peer plus one scaled difference.</td><td>Uses a random K per trial and no crossover.</td></tr>
+<tr><td>jDE</td><td>Per-individual F and CR adaptation.</td><td>Successful parameter values follow their candidate in this compact τ-based profile.</td></tr>
+<tr><td>JADE</td><td>current-to-pbest/1, external archive, adaptive Cauchy F and normal CR.</td><td>Simplified running means.</td></tr>
+<tr><td>SHADE</td><td>current-to-pbest/1, archive, success-history memories.</td><td>Random memory slot; weighted Lehmer F and arithmetic CR updates.</td></tr>
+<tr><td>L-SHADE</td><td>SHADE-style profile with linear population reduction.</td><td>Population decreases toward four over the selected evaluation budget.</td></tr>
+<tr><td>jSO</td><td>L-SHADE-family p-best search with staged weighting.</td><td>Simplified stage thresholds and weighting; not the full CEC jSO specification.</td></tr>
+<tr><td>SaDE</td><td>Success and failure histories update probabilities across four strategies.</td><td>Compact learning profile, not a bit-exact port.</td></tr>
+<tr><td>CoDE</td><td>Strategy and parameter pool creates up to three trials per target.</td><td>Each objective call consumes budget; the final generation may be partial.</td></tr>
+<tr><td>EPSDE</td><td>Each candidate carries a strategy and F/CR choice.</td><td>Failed choices are reinitialized from small built-in pools.</td></tr>
+</tbody></table>
+<h2>Shared DE implementation rules</h2>
+<ul>
+<li>The app minimizes Sphere, Rastrigin, or Rosenbrock on the selected dimension and function bounds.</li>
+<li>Peer indices are sampled without replacement and exclude the target when the method permits.</li>
+<li>Greedy one-to-one selection retains the lower objective value.</li>
+<li>Out-of-bound values are reflected back into the feasible interval.</li>
+<li>The evaluation budget includes initial population scoring and every trial evaluation. CoDE may end partway through its multi-trial generation.</li>
+<li>The landscape is a 2D slice varying x₁ and x₂ while later coordinates are zero; candidate objectives use the full selected dimension.</li>
+<li>Random choices use the visible seed. Changing settings starts a new run.</li>
+</ul>
+<h2>Research workflow and provenance</h2>
+<p>The Research Workflow tab assembles a reviewable analysis plan from the imported profile, stated research question, and selected visualization. It records source metadata (including a SHA-256 checksum where browser support permits), field profile, missing and duplicate counts, exploratory outlier-screening counts, chart fields and settings, researcher preprocessing/statistical-method notes, and a self-reported review checklist. The plan asks the researcher to verify extraction, units, study design, observation unit, preprocessing, and visualization fit.</p>
+<p>This is a documentation aid. It does not validate data, verify checklist responses, run inferential statistics, or generate research claims. A checksum identifies the uploaded file bytes; it does not guarantee that extracted values or downstream analyses are correct.</p>
+<h2>Research figure methods</h2>
+<p>The Data Studio profiles field types, missing cells, exact duplicate rows, numeric ranges, and category structure. Recommendations are a deterministic, rule-based ranker using source shape and the stated question. The plot builder supports line, area, scatter, bubble, bar, grouped bar, histogram, ECDF, box, correlation heatmap, Pareto, image intensity, table, concept-map, and process views.</p>
+<p>Histograms use a Freedman–Diaconis bin-width estimate when quartiles and range allow it, with a bounded fallback of 5–60 bins. Box plots show min, first quartile, median, third quartile, and max. Correlation heatmaps show Pearson r with pairwise-complete values. These are descriptive summaries: no inferential test, confidence interval, imputation, or causal model is produced.</p>
+<p>Source values remain available for export. Plots with more than 6,000 observations may use deterministic stride sampling to keep interaction responsive; exported CSV, TSV, JSON, Excel, and Figure JSON retain all imported rows. A plotted series is labeled when sampled. Sources are capped at 50,000 rows and 1,000,000 cells to protect browser memory; oversized inputs are flagged. Image profiling samples at most 10,000 pixels and is not a scientific image-segmentation method.</p>
+<h2>Primary references</h2>
+<ul>
+<li>JADE: <a href="https://ieeexplore.ieee.org/document/5208221">Adaptive Differential Evolution with Optional External Archive</a>.</li>
+<li>SHADE: <a href="https://www.metahack.org/CEC2013-SHADE.pdf">Success-History Based Adaptive Differential Evolution</a>.</li>
+<li>L-SHADE: <a href="https://ryojitanabe.github.io/publication">Ryoji Tanabe’s publications and implementation notes</a>.</li>
+<li>jSO: <a href="https://labraj.feri.um.si/wp-content/uploads/janez/CEC2017-jSO.pdf">Success-History based Parameter Adaptation for Differential Evolution</a>.</li>
+<li>SaDE: <a href="https://tiezhongyu2005.github.io/resources/popularization/SaDE_2009.pdf">Differential Evolution with Adaptive Strategy and Parameter Selection</a>.</li>
+<li>CoDE and EPSDE: <a href="https://www.sciencedirect.com/science/article/pii/S1568494610001043">Ensemble strategies and parameter choices for Differential Evolution</a>.</li>
+</ul>
+</main>
+<footer>Project by Taharimul Islam · Methods are documented for transparency and reproducibility</footer>
+</body>
+</html>

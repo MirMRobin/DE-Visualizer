@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Guide to importing research data and creating traceable figures in the Differential Evolution Visualizer.">
+<title>Guide · Differential Evolution Visualizer</title>
+<style>
+:root{--ink:#172d39;--muted:#536970;--paper:#f3f5f3;--white:#fff;--line:#d5dfdb;--teal:#16766d;--gold:#bd9252;--serif:"Times New Roman",Georgia,serif;--sans:Arial,Helvetica,sans-serif}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--serif)}header,main,footer{max-width:1100px;margin:auto;padding:0 28px}header{display:flex;justify-content:space-between;align-items:center;padding-top:23px;padding-bottom:17px;border-bottom:1px solid var(--line);font:13px var(--sans)}header a{color:var(--teal);text-decoration:none;border:1px solid var(--line);padding:8px 12px;background:#fff}main{padding-top:38px;padding-bottom:60px}h1{font-size:clamp(38px,6vw,60px);line-height:1.05;font-weight:normal;margin:0 0 12px;max-width:760px}h2{font-size:27px;font-weight:normal;margin:35px 0 8px}h3{font:18px var(--sans);margin:24px 0 7px}p{max-width:76ch;color:#40565f}li{margin:5px 0;max-width:78ch}.lead{font-size:20px;max-width:70ch;color:#40565f}.callout{border:1px solid var(--line);background:#fff;padding:15px 18px;margin:20px 0}.callout strong{color:var(--teal)}table{width:100%;border-collapse:collapse;background:#fff;font:14px/1.5 var(--sans)}th,td{padding:10px 12px;text-align:left;vertical-align:top;border:1px solid var(--line)}th{background:#eaf2ef;color:#304c50}code{font:13px Consolas,monospace;background:#eaf0ed;padding:2px 4px}footer{padding-top:16px;padding-bottom:25px;border-top:1px solid var(--line);font:12px var(--sans);color:var(--muted)}:focus-visible{outline:3px solid var(--gold);outline-offset:2px}@media(max-width:650px){header,main,footer{padding-left:16px;padding-right:16px}table{font-size:12px}th,td{padding:7px}}
+</style>
+</head>
+<body>
+<header><strong>Differential Evolution Visualizer</strong><nav><a href="index.html?tab=studio">Open Data Studio</a></nav></header>
+<main>
+<h1>Research data and figure studio</h1>
+<p class="lead">This browser-based workspace profiles a source file, recommends visual forms from its data structure and your stated question, and exports a figure together with the data and settings used to produce it.</p>
+<div class="callout"><strong>Scientific scope.</strong> Recommendations are transparent, rule-based suggestions. The tool does not infer scientific meaning, impute missing values, perform statistical tests, or establish that a visualization supports a research claim. Inspect extracted values and figure settings against the source.</div>
+<h2>1. Load a source</h2>
+<p>Use one file at a time or paste text into the source field. The supported browser parsers are bundled with the project so spreadsheet, Word, and PDF parsing can run locally.</p>
+<table><thead><tr><th>Source format</th><th>What the workspace extracts</th><th>Checks and limits</th></tr></thead><tbody>
+<tr><td>CSV, TSV, JSON</td><td>Rows and fields; nested JSON objects can be shown as concept/detail records.</td><td>Up to 50,000 rows, 1,000,000 cells, and 25 MB. Delimiters are inferred; confirm field names and numeric types.</td></tr>
+<tr><td>Excel: XLSX, XLS, XLSM, ODS</td><td>Worksheet values, with a selector when the workbook has multiple sheets.</td><td>Up to 25 MB, 50,000 rows, 1,000,000 cells, and 1,000 fields. Formulas are not recalculated; cached workbook values are read. Macros are not executed.</td></tr>
+<tr><td>Word: DOCX</td><td>Text, headings, lists, and tables. Tables can be selected for structured analysis.</td><td>Complex layouts, merged cells, and multi-column documents require review. Legacy binary DOC files are not supported.</td></tr>
+<tr><td>PDF</td><td>Selectible text from up to 50 pages, approximately grouped by line.</td><td>Layout, columns, and tables may be rearranged. Scanned pages can use optional OCR for up to 10 pages.</td></tr>
+<tr><td>Images: PNG, JPEG, WebP, BMP, GIF</td><td>Downsampled pixel coordinates, RGB, brightness, hue, and saturation; a spatial brightness view and distributions are available.</td><td>Sampling is limited to 10,000 pixels. Animated GIFs use the decoded frame. This is pixel-level profiling, not object recognition or scientific interpretation.</td></tr>
+<tr><td>TXT, Markdown</td><td>Lines, headings, indentation, and ordered steps for structure and process views.</td><td>Review inferred hierarchy; the tool does not infer relationships that are not expressed in the text.</td></tr>
+</tbody></table>
+<h2>2. Review the profile</h2>
+<p>The profile reports observation and field counts, numeric, categorical, and mixed fields, missing cells, category levels, and exact duplicate rows. Numeric fields also show minimum, quartiles, median, maximum, mean, and sample standard deviation. Profiling runs in a Web Worker where the browser permits it. Empty cells are treated as missing; strings such as “NA” are not assumed to be missing. Missing values are excluded from calculations when a figure requires numeric values; no imputation or row removal is applied. Duplicate records stay in the dataset. Oversized sources are capped at 50,000 rows and 1,000,000 cells, and the profile reports when data was capped.</p>
+<p>Image OCR is an optional text-extraction action. The first use downloads the OCR engine and English language data from a public CDN; the selected image or PDF stays in the browser. OCR may confuse symbols, labels, or decimal points. OCR does not convert plotted lines or bars into source data.</p>
+<h2>3. Pick a figure and configure it</h2>
+<p>The ranked catalog includes line and area trends, scatter and bubble plots, category and grouped bars, histograms, empirical cumulative distributions, box plots, correlation matrices, Pareto charts, image intensity maps, data tables, concept maps, and process sequences.</p>
+<p>Recommendations use detected field types, field count, category structure, and your chosen question. Select the horizontal and vertical fields, optional series group, aggregation, palette, title, axis labels, and output dimensions. If a chart shows a limited point sample for responsiveness, the figure caption identifies that fact; data exports retain the full imported rows.</p>
+<h2>4. Export the figure and its evidence</h2>
+<ul>
+<li><b>SVG:</b> editable vector artwork; best for suitable journal or presentation workflows.</li>
+<li><b>PNG 2× / 4×:</b> high-resolution raster output at the chosen figure dimensions.</li>
+<li><b>Data CSV / TSV / JSON / Excel:</b> the imported or extracted rows for independent review.</li>
+<li><b>Figure JSON:</b> figure configuration, chart option, source summary, and data for reproducibility.</li>
+<li><b>HTML:</b> a portable figure report; <b>Markdown</b> documents source and settings.</li>
+<li><b>Mermaid / OPML:</b> structure exports for mind maps and process outlines.</li>
+</ul>
+<div class="callout"><strong>Interpretation stays with the researcher.</strong> Correlations are descriptive Pearson coefficients with pairwise-complete numeric values. No confidence intervals, hypothesis tests, causal claims, or model assumptions are inferred. Verify units, transformations, sampling, and aggregation before publication.</div>
+<h2>5. Build a reviewable research workflow</h2>
+<p>After profiling data and configuring a figure, open <b>Research workflow</b>. The plan is generated from the current source profile, selected research purpose, and figure fields. It prompts the researcher to verify extraction, define the observation unit and study design, review missing and duplicate records, and document transformations and statistical methods performed elsewhere.</p>
+<p>Download a JSON record for structured reuse or a Markdown plan for a manuscript folder. Uploaded files receive a local SHA-256 checksum when browser support permits; pasted or edited data is identified as such. The record includes detected profile signals, figure configuration, chart-selection rationale, researcher notes, and the self-reported review checklist. Checklist ticks are not machine-verified. Keep the original data and any code needed to reproduce analyses.</p>
+<div class="callout"><strong>Workflow boundary.</strong> The plan is a transparent checklist, not an automated protocol, data-cleaning engine, ethics review, statistical test, or scientific validation. Statistical conclusions must come from appropriate methods applied to the study design.</div>
+<h2>Privacy and browser requirements</h2>
+<p>Uploaded files are processed in the active browser page and are not posted to an application server. OCR is the one network-assisted feature: its engine and English language data are fetched on demand. For PDF workers and OCR, use the published GitHub Pages site or serve the project from a local web server; direct <code>file://</code> access may be restricted by browser worker security.</p>
+<p>For a local preview, run <code>python3 -m http.server 8000</code> from the project folder and open <code>http://localhost:8000</code>.</p>
+</main>
+<footer>Project by Taharimul Islam · Research Data &amp; Figure Studio</footer>
+</body>
+</html>
